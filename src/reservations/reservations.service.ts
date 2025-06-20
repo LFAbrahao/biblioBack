@@ -47,7 +47,7 @@ export class ReservationsService {
       book, // TypeORM vai lidar com a associação
       reservationDate: new Date(reservationDate),
       status: 'pending', // Status inicial da reserva
-      totalPrice: book.price, // Preço do livro no momento da reserva
+      //totalPrice: book.price, // Preço do livro no momento da reserva
     });
 
     return this.reservationsRepository.save(reservation);

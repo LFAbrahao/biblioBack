@@ -19,17 +19,13 @@ export class Book {
 
   // Adicionei outras propriedades que havíamos discutido para um e-commerce de livros
   // Você pode ajustar conforme as suas necessidades
-  @ApiProperty({ nullable: true })
-  @Column({ nullable: true, length: 255 })
-  publisher: string;
+  //@ApiProperty({ nullable: true })
+  //@Column({ nullable: true, length: 255 })
+  //publisher: string;
 
-  @ApiProperty({ nullable: true })
-  @Column({ type: 'int', nullable: true })
-  publicationYear: number;
-
-  @ApiProperty({ nullable: true })
-  @Column({ unique: true, length: 13, nullable: true })
-  isbn: string;
+  //@ApiProperty({ nullable: true })
+  //@Column({ type: 'int', nullable: true })
+  //publicationYear: number;
 
   @ApiProperty({ nullable: true })
   @Column({ nullable: true, length: 100 })
@@ -39,9 +35,9 @@ export class Book {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @ApiProperty()
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
-  price: number; // Preço do livro
+  //@ApiProperty()
+  //@Column({ type: 'decimal', precision: 10, scale: 2, default: 0.00 })
+  //price: number; // Preço do livro
 
   @ApiProperty()
   @Column({ type: 'int', default: 0 })
