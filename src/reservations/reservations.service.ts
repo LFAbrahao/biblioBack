@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // src/reservations/reservations.service.ts
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';

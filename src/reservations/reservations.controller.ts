@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // src/reservations/reservations.controller.ts
 import {
     Controller,
