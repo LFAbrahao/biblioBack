@@ -1,14 +1,21 @@
-import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
+// src/auth/auth.controller.ts
+
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
+// DTO para validação dos dados de entrada
+class LoginDto {
+  email: string;
+  password: string;
+}
+
+@Controller('auth') // Rota base será /auth
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('login')
-  async login(@Body() body: { email: string; password: string }) {
-    const user = await this.authService.validateUser(body.email, body.password);
-    if (!user) throw new UnauthorizedException();
-    return this.authService.login(user);
+  @HttpCode(HttpStatus.OK)
+  @Post('login') // Rota completa: POST /auth/login
+  signIn(@Body() loginDto: LoginDto) {
+    return this.authService.login(loginDto.email, loginDto.password);
   }
 }
