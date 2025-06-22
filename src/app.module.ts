@@ -7,6 +7,7 @@ import { ReservationsModule } from './reservations/reservations.module';
 import { User } from './users/user.entity';
 import { Book } from './books/book.entity';
 import { Reservation } from './reservations/reservation.entity'; 
+import { AuthModule } from './auth/auth.module'; 
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { Reservation } from './reservations/reservation.entity';
     UsersModule,
     BooksModule,
     ReservationsModule, 
+    AuthModule,
   ],
 })
 export class AppModule {}
