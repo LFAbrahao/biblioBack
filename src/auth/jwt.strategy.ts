@@ -13,6 +13,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    return { userId: payload.sub, username: payload.username };
+    // Retorna o usuário completo incluindo o role necessário para o RolesGuard
+    return { 
+      userId: payload.sub, 
+      username: payload.username,
+      role: payload.role // ADICIONADO: role necessário para autorização
+    };
   }
 }

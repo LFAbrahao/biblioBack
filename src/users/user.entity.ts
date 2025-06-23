@@ -5,7 +5,7 @@ import { Reservation } from '../reservations/reservation.entity'; // <-- Adicion
 
 export enum UserRole {
   ADMIN = 'admin',
-  BIBLIOTECARIA = 'bibliotecaria',
+  BIBLIOTECARIA = 'bibliotecaria', // Mantém consistente com o frontend
   USER = 'user',
 }
 
