@@ -75,14 +75,27 @@ export class ReservationsService {
       throw new NotFoundException(`Reservation with ID ${id} not found.`);
     }
 
-    // Lógica para lidar com a mudança de status, especialmente para 'cancelled' ou 'returned'
-    if (updateReservationDto.status && updateReservationDto.status === 'cancelled' && reservation.status !== 'cancelled') {
-        // Se a reserva está sendo cancelada e não estava cancelada antes, aumenta o estoque do livro
-        const book = reservation.book;
-        book.stock += 1;
-        await this.booksRepository.save(book);
+    // Se o status está sendo alterado para 'cancelled' e ainda não estava cancelado
+    if (
+      updateReservationDto.status &&
+      updateReservationDto.status === 'cancelled' &&
+      reservation.status !== 'cancelled'
+    ) {
+      const book = reservation.book;
+      book.stock += 1;
+      await this.booksRepository.save(book);
     }
-    // TODO: Adicionar lógica para 'returned' se for um sistema de empréstimo
+
+    // Se o status está sendo alterado para 'returned' e ainda não estava retornado
+    if (
+      updateReservationDto.status &&
+      updateReservationDto.status === 'returned' &&
+      reservation.status !== 'returned'
+    ) {
+      const book = reservation.book;
+      book.stock += 1;
+      await this.booksRepository.save(book);
+    }
 
     // Atualiza apenas os campos que estão presentes no DTO
     Object.assign(reservation, updateReservationDto);
