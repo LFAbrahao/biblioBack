@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, Patch, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { Book } from './book.entity';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
@@ -24,8 +24,8 @@ export class BooksController {
   @Roles('admin', 'bibliotecaria', 'user')
   @ApiOperation({ summary: 'Busca um livro pelo ID' })
   @ApiResponse({ status: 200, description: 'Livro encontrado.', type: Book })
-  findOne(@Param('id') id: string) {
-    return this.booksService.findOne(Number(id));
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.booksService.findOne(id);
   }
 
   @Post()
@@ -44,8 +44,8 @@ export class BooksController {
   @ApiResponse({ status: 200, description: 'Livro atualizado com sucesso.', type: Book })
   @ApiResponse({ status: 404, description: 'Livro não encontrado.' })
   @ApiBody({ type: Book })
-  update(@Param('id') id: string, @Body() updateBookDto: Partial<Book>) {
-    return this.booksService.update(Number(id), updateBookDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateBookDto: Partial<Book>) {
+    return this.booksService.update(id, updateBookDto);
   }
 
   @Delete(':id')
@@ -54,7 +54,13 @@ export class BooksController {
   @ApiResponse({ status: 204, description: 'Livro deletado com sucesso.' })
   @ApiResponse({ status: 404, description: 'Livro não encontrado.' })
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
-    return this.booksService.remove(Number(id));
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.booksService.remove(id);
+  }
+
+  @Get('statistics')
+  @Roles('admin', 'bibliotecaria')
+  getStatistics() {
+    return this.booksService.getStatistics();
   }
 }

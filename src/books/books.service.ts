@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from './book.entity';
+import { Reservation } from '../reservations/reservation.entity'; // Adicione este import
 
 @Injectable()
 export class BooksService {
@@ -49,5 +50,33 @@ export class BooksService {
     if (result.affected === 0) {
       throw new NotFoundException(`Livro com o ID "${id}" não encontrado`);
     }
+  }
+
+  async getStatistics() {
+    // Soma total de livros em estoque
+    const { sum } = await this.booksRepository
+      .createQueryBuilder('book')
+      .select('SUM(book.stock)', 'sum')
+      .getRawOne();
+
+    // Total de reservas pendentes
+    const pending = await this.booksRepository.manager
+      .getRepository(Reservation)
+      .createQueryBuilder('reservation')
+      .where('reservation.status = :status', { status: 'pending' })
+      .getCount();
+
+    // Total de reservas devolvidas
+    const returned = await this.booksRepository.manager
+      .getRepository(Reservation)
+      .createQueryBuilder('reservation')
+      .where('reservation.status = :status', { status: 'returned' })
+      .getCount();
+
+    return {
+      totalStock: Number(sum) || 0,
+      totalReserved: pending,
+      totalReturned: returned,
+    };
   }
 }
