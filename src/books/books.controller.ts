@@ -20,6 +20,15 @@ export class BooksController {
     return this.booksService.findAll();
   }
 
+  // ROTAS ESTÁTICAS DEVEM VIR ANTES DAS DINÂMICAS
+  @Get('statistics')
+  @Roles('admin', 'bibliotecaria')
+  @ApiOperation({ summary: 'Estatísticas dos livros' })
+  @ApiResponse({ status: 200, description: 'Totais de estoque, reservados e devolvidos.' })
+  getStatistics() {
+    return this.booksService.getStatistics();
+  }
+
   @Get(':id')
   @Roles('admin', 'bibliotecaria', 'user')
   @ApiOperation({ summary: 'Busca um livro pelo ID' })
@@ -34,7 +43,6 @@ export class BooksController {
   @ApiOperation({ summary: 'Cria um novo livro' })
   @ApiResponse({ status: 201, description: 'Livro criado.', type: Book })
   create(@Body() book: Partial<Book>) {
-    console.log('2. Backend [Controller] recebeu a requisição para criar:', book);
     return this.booksService.create(book);
   }
 
@@ -56,11 +64,5 @@ export class BooksController {
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.booksService.remove(id);
-  }
-
-  @Get('statistics')
-  @Roles('admin', 'bibliotecaria')
-  getStatistics() {
-    return this.booksService.getStatistics();
   }
 }
